@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'java-library'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.5.1'
+}
+
+group 'com.github.hibi_10000.plugins'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/groups/public' }
+}
+
+dependencies {
+    api 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    //useJUnitPlatform()
+}
+
+bukkit {
+    name = rootProject.name
+    version = project.version
+    description = 'This is a add Creative Server Permissions plugin'
+    website = 'https://github.com/Hibi-10000/CreativeServerPermissions'
+    author = 'Hibi_10000'
+    main = 'com.github.hibi_10000.plugins.creativeserverpermissions.CreativeServerPermissions'
+    apiVersion = '1.17'
+
+    load = 'STARTUP' // or 'POSTWORLD'
+    //authors = ['Auther1', 'Auther2']
+    //depend = ['Plugin']
+    //softDepend = ['Plugin']
+    //loadBefore = ['Plugin']
+    //prefix = 'Plugin'
+    defaultPermission = 'OP' // 'TRUE', 'FALSE', 'OP' or 'NOT_OP'
+    //provides = ['Plugin1', 'Plugin2']
+
+    /*commands {
+        'autobackup' {
+            description = 'Base Command'
+            aliases = ['abu']
+            permission = 'autobackup.command'
+            permissionMessage = 'Unknown command. Type "/help" for help.'
+            //usage = ''
+        }
+    }*/
+
+    permissions {
+        'creativeserverpermissions.teleport' {
+            description = 'Teleport Permission'
+            setDefault('true')
+            //children = ['autobackup.command','autobackup.reload', 'autobackup.admin', 'autobackup.create'] // Defaults permissions to true
+            // You can also specify the values of the permissions
+            //childrenMap = ['test': false]
+        }
+        'creativeserverpermissions.teleport.other' {
+            description = 'Other Player Teleport Permission'
+            setDefault('OP')
+        }
+        'creativeserverpermissions.gamemode' {
+            description = 'Gamemode Permission'
+            setDefault('true')
+        }
+        'creativeserverpermissions.gamemode.other' {
+            description = 'Other Player Gamemode Permission'
+            setDefault('OP')
+        }
+    }
+}
