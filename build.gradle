@@ -41,15 +41,22 @@ bukkit {
     defaultPermission = 'OP' // 'TRUE', 'FALSE', 'OP' or 'NOT_OP'
     //provides = ['Plugin1', 'Plugin2']
 
-    /*commands {
-        'autobackup' {
-            description = 'Base Command'
-            aliases = ['abu']
-            permission = 'autobackup.command'
+    commands {
+        'gamemode' {
+            description = 'Gamemode Command'
+            //aliases = ['abu']
+            permission = 'creativeserverpermissions.gamemode'
             permissionMessage = 'Unknown command. Type "/help" for help.'
             //usage = ''
         }
-    }*/
+        'tp'{
+            description = 'Teleport Command'
+            aliases = ['teleport']
+            permission = 'creativeserverpermissions.teleport'
+            permissionMessage = 'Unknown command. Type "/help" for help.'
+            //usage = ''
+        }
+    }
 
     permissions {
         'creativeserverpermissions.teleport' {
@@ -62,6 +69,7 @@ bukkit {
         'creativeserverpermissions.teleport.other' {
             description = 'Other Player Teleport Permission'
             setDefault('OP')
+            children = ['creativeserverpermissions.teleport']
         }
         'creativeserverpermissions.gamemode' {
             description = 'Gamemode Permission'
@@ -70,6 +78,7 @@ bukkit {
         'creativeserverpermissions.gamemode.other' {
             description = 'Other Player Gamemode Permission'
             setDefault('OP')
+            children = ['creativeserverpermissions.gamemode']
         }
     }
 }
