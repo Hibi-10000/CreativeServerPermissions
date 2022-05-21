@@ -10,7 +10,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class CreativeServerPermissions extends JavaPlugin {
@@ -67,9 +69,37 @@ public class CreativeServerPermissions extends JavaPlugin {
 				} else {
 					z = String.valueOf(p.getLocation().clone().add(0, 0, Double.parseDouble(z.replaceFirst("~", ""))).getZ());
 				}
+			}/*
+			if (x.startsWith("^")) {
+				if (y.startsWith("^")) {
+					if (z.startsWith("^")) {
+						if (x.equalsIgnoreCase("^")) {x = "0";}
+						if (y.equalsIgnoreCase("^")) {y = "0";}
+						if (z.equalsIgnoreCase("^")) {z = "0";}
+						x = x.replaceFirst("^", "");
+						y = y.replaceFirst("^", "");
+						z = z.replaceFirst("^", "");
+						double npitch = ((pitch + 90) * Math.PI) / 180;
+						double nyaw  = ((yaw + 90)  * Math.PI) / 180;
+						double nx = Math.sin(pitch) * Math.cos(yaw);
+						double ny = Math.sin(pitch) * Math.sin(yaw);
+						double nz = Math.cos(pitch);
+						Vector v = new Vector(nx, nz, ny);
+						v.multiply(new Vector(Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(z)));
+					}
+					sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
+					return null;
+				}
+				sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
+				return null;
 			}
+			if (y.startsWith("^") || z.startsWith("^")) {
+				sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
+				return null;
+			}*/
 		} catch (NumberFormatException e) {
 			sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
+			return null;
 		}
 		return new Location(p.getWorld(), Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(z), yaw, pitch);
 	}
@@ -100,8 +130,21 @@ public class CreativeServerPermissions extends JavaPlugin {
 			try {
 				gamemode = GameMode.valueOf(args[0].toUpperCase());
 			} catch (IllegalArgumentException e) {
-				sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
-				return false;
+				Map<String ,GameMode> map = new HashMap<>();
+				map.put("0", GameMode.SURVIVAL);
+				map.put("s", GameMode.SURVIVAL);
+				map.put("1", GameMode.CREATIVE);
+				map.put("c", GameMode.CREATIVE);
+				map.put("2", GameMode.ADVENTURE);
+				map.put("a", GameMode.ADVENTURE);
+				map.put("3", GameMode.SPECTATOR);
+				map.put("sp", GameMode.SPECTATOR);
+				if (map.containsKey(args[0])) {
+					gamemode = map.get(args[0]);
+				} else {
+					sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
+					return false;
+				}
 			}
 			if (sender.hasPermission("creativeserverpermissions.gamemode.other") && args.length == 2) {
 				if (args[1].equalsIgnoreCase("@e")) {
