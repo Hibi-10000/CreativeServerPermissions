@@ -49,6 +49,12 @@ public class CreativeServerPermissions extends JavaPlugin {
 	private Location getLocation(CommandSender sender, String x, String y, String z, Float pitch, Float yaw) {
 		Player p = (Player) sender;
 		try {
+			if (!(x.startsWith("~") || x.startsWith("^")) && !x.contains(".") && Double.parseDouble(x) == Integer.parseInt(x)) {
+				x = String.valueOf(Integer.parseInt(x) + 0.5);
+			}
+			if (!(z.startsWith("~") || z.startsWith("^")) && !z.contains(".") && Double.parseDouble(z) == Integer.parseInt(z)) {
+				z = String.valueOf(Integer.parseInt(z) + 0.5);
+			}
 			if (x.startsWith("~")) {
 				if (x.equalsIgnoreCase("~")) {
 					x = String.valueOf(p.getLocation().getX());
