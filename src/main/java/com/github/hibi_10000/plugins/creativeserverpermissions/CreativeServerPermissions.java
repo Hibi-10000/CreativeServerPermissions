@@ -79,19 +79,48 @@ public class CreativeServerPermissions extends JavaPlugin {
 			if (x.startsWith("^")) {
 				if (y.startsWith("^")) {
 					if (z.startsWith("^")) {
-						if (x.equalsIgnoreCase("^")) {x = "0";}
-						if (y.equalsIgnoreCase("^")) {y = "0";}
-						if (z.equalsIgnoreCase("^")) {z = "0";}
-						x = x.replaceFirst("^", "");
-						y = y.replaceFirst("^", "");
-						z = z.replaceFirst("^", "");
-						double npitch = ((pitch + 90) * Math.PI) / 180;
-						double nyaw  = ((yaw + 90)  * Math.PI) / 180;
-						double nx = Math.sin(pitch) * Math.cos(yaw);
-						double ny = Math.sin(pitch) * Math.sin(yaw);
-						double nz = Math.cos(pitch);
-						Vector v = new Vector(nx, nz, ny);
-						v.multiply(new Vector(Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(z)));
+						if (x.equalsIgnoreCase("^") && y.equalsIgnoreCase("^") && z.equalsIgnoreCase("^")) {
+							Location newloc = ((Player) sender).getLocation();
+							if (!x.equalsIgnoreCase("^")) {
+								double Xadd = Double.parseDouble(x.replaceFirst("^", ""));
+								double npitch = ((pitch + 90) * Math.PI) / 180;
+								double nyaw = ((yaw + 90 - 90) * Math.PI) / 180;
+								double nx = Math.sin(npitch) * Math.cos(nyaw);
+								double ny = Math.sin(npitch) * Math.sin(nyaw);
+								double nz = Math.cos(npitch);
+								Vector v = new Vector(nx, nz, ny);
+								newloc = newloc.clone().add(v.multiply(Xadd));
+							}
+							if (!y.equalsIgnoreCase("^")) {
+								double Yadd = Double.parseDouble(x.replaceFirst("^", ""));
+								double npitch = ((pitch + 90 - 90) * Math.PI) / 180;
+								double nyaw = ((yaw + 90) * Math.PI) / 180;
+								double nx = Math.sin(npitch) * Math.cos(nyaw);
+								double ny = Math.sin(npitch) * Math.sin(nyaw);
+								double nz = Math.cos(npitch);
+								Vector v = new Vector(nx, nz, ny);
+								newloc = newloc.clone().add(v.multiply(Yadd));
+							}
+							if (!z.equalsIgnoreCase("^")) {
+								double Zadd = Double.parseDouble(x.replaceFirst("^", ""));
+								double npitch = ((pitch + 90) * Math.PI) / 180;
+								double nyaw = ((yaw + 90) * Math.PI) / 180;
+								double nx = Math.sin(npitch) * Math.cos(nyaw);
+								double ny = Math.sin(npitch) * Math.sin(nyaw);
+								double nz = Math.cos(npitch);
+								Vector v = new Vector(nx, nz, ny);
+								newloc = newloc.clone().add(v.multiply(Zadd));
+							}
+							x = String.valueOf(newloc.getX());
+							y = String.valueOf(newloc.getY());
+							z = String.valueOf(newloc.getZ());
+						} else {
+							sender.sendMessage("1");
+							x = String.valueOf(((Player) sender).getLocation().getX());
+							y = String.valueOf(((Player) sender).getLocation().getY());
+							z = String.valueOf(((Player) sender).getLocation().getZ());
+						}
+						return new Location(p.getWorld(), Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(z), yaw, pitch);
 					}
 					sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
 					return null;
