@@ -6,15 +6,17 @@ plugins {
 }
 
 group 'com.github.hibi_10000.plugins'
-version '1.1.0'
+version '1.2.0'
 
 repositories {
     mavenCentral()
     maven { url 'https://hub.spigotmc.org/nexus/content/groups/public' }
+    maven { url "https://repo.dmulloy2.net/repository/public/" }
 }
 
 dependencies {
     api 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    api 'com.comphenix.protocol:ProtocolLib:4.7.0'
     //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
@@ -39,7 +41,7 @@ bukkit {
     load = 'STARTUP' // or 'POSTWORLD'
     //authors = ['Auther1', 'Auther2']
     //depend = ['Plugin']
-    //softDepend = ['Plugin']
+    softDepend = ['ProtocolLib']
     //loadBefore = ['Plugin']
     //prefix = 'Plugin'
     defaultPermission = 'OP' // 'TRUE', 'FALSE', 'OP' or 'NOT_OP'
@@ -77,6 +79,10 @@ bukkit {
         }
         'creativeserverpermissions.gamemode' {
             description = 'Gamemode Permission'
+            setDefault('true')
+        }
+        'creativeserverpermissions.gamemode.use-f3f4n' {
+            description = 'Client F3+F4 or F3+N Gamemode Changer Use Permission'
             setDefault('true')
         }
         'creativeserverpermissions.gamemode.other' {
