@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,68 +65,26 @@ public class Teleport implements CommandExecutor, TabCompleter {
 				} else {
 					z = String.valueOf(p.getLocation().clone().add(0, 0, Double.parseDouble(z.replaceFirst("~", ""))).getZ());
 				}
-			}/*
-			if (x.startsWith("^")) {
-				if (y.startsWith("^")) {
-					if (z.startsWith("^")) {
-						if (x.equalsIgnoreCase("^") && y.equalsIgnoreCase("^") && z.equalsIgnoreCase("^")) {
-							Location newloc = ((Player) sender).getLocation();
-							if (!x.equalsIgnoreCase("^")) {
-								double Xadd = Double.parseDouble(x.replaceFirst("^", ""));
-								double npitch = ((pitch + 90) * Math.PI) / 180;
-								double nyaw = ((yaw + 90 - 90) * Math.PI) / 180;
-								double nx = Math.sin(npitch) * Math.cos(nyaw);
-								double ny = Math.sin(npitch) * Math.sin(nyaw);
-								double nz = Math.cos(npitch);
-								Vector v = new Vector(nx, nz, ny);
-								newloc = newloc.clone().add(v.multiply(Xadd));
-							}
-							if (!y.equalsIgnoreCase("^")) {
-								double Yadd = Double.parseDouble(x.replaceFirst("^", ""));
-								double npitch = ((pitch + 90 - 90) * Math.PI) / 180;
-								double nyaw = ((yaw + 90) * Math.PI) / 180;
-								double nx = Math.sin(npitch) * Math.cos(nyaw);
-								double ny = Math.sin(npitch) * Math.sin(nyaw);
-								double nz = Math.cos(npitch);
-								Vector v = new Vector(nx, nz, ny);
-								newloc = newloc.clone().add(v.multiply(Yadd));
-							}
-							if (!z.equalsIgnoreCase("^")) {
-								double Zadd = Double.parseDouble(x.replaceFirst("^", ""));
-								double npitch = ((pitch + 90) * Math.PI) / 180;
-								double nyaw = ((yaw + 90) * Math.PI) / 180;
-								double nx = Math.sin(npitch) * Math.cos(nyaw);
-								double ny = Math.sin(npitch) * Math.sin(nyaw);
-								double nz = Math.cos(npitch);
-								Vector v = new Vector(nx, nz, ny);
-								newloc = newloc.clone().add(v.multiply(Zadd));
-							}
-							x = String.valueOf(newloc.getX());
-							y = String.valueOf(newloc.getY());
-							z = String.valueOf(newloc.getZ());
-						} else {
-							sender.sendMessage("1");
-							x = String.valueOf(((Player) sender).getLocation().getX());
-							y = String.valueOf(((Player) sender).getLocation().getY());
-							z = String.valueOf(((Player) sender).getLocation().getZ());
-						}
-						return new Location(p.getWorld(), Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(z), yaw, pitch);
-					}
-					sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
-					return null;
-				}
-				sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
-				return null;
 			}
-			if (y.startsWith("^") || z.startsWith("^")) {
-				sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
-				return null;
-			}*/
+			if (x.startsWith("^") && y.startsWith("^") && z.startsWith("^")) {
+				double ix = 0;
+				double iy = 0;
+				double iz = 0;
+				if (!x.equalsIgnoreCase("^")) {ix = Double.parseDouble(x.replaceFirst("\\^", ""));}
+				if (!y.equalsIgnoreCase("^")) {iy = Double.parseDouble(y.replaceFirst("\\^", ""));}
+				if (!z.equalsIgnoreCase("^")) {iz = Double.parseDouble(z.replaceFirst("\\^", ""));}
+				Location loc = p.getLocation();
+				Vector vec = loc.getDirection().normalize();
+				loc = loc.clone().add(vec.clone().setX(vec.getZ()).setZ(vec.getX()).multiply(ix));
+				loc = loc.clone().add(vec.clone().setY(vec.getZ()).setZ(vec.getY()).multiply(iy));
+				loc = loc.clone().add(vec.clone().multiply(iz));
+				return loc;
+			}
+			return new Location(p.getWorld(), Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(z), yaw, pitch);
 		} catch (NumberFormatException e) {
 			sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
 			return null;
 		}
-		return new Location(p.getWorld(), Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(z), yaw, pitch);
 	}
 
 	@Override
