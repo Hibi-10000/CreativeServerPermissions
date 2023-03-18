@@ -7,10 +7,7 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 
 public class Gamemode implements CommandExecutor, TabCompleter {
@@ -26,6 +23,11 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 
 	private void sendChangeGamemodeMessage(CommandSender sender, Player player, GameMode gamemode) {
 		if (player == null) {
+			sender.sendMessage("Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
+			Bukkit.getLogger().log(Level.INFO, ChatColor.GRAY + "[" + sender.getName() + ": Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
+			return;
+		}
+		if (sender.getName().equals(player.getName())) {
 			sender.sendMessage("Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
 			Bukkit.getLogger().log(Level.INFO, ChatColor.GRAY + "[" + sender.getName() + ": Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
 			return;
@@ -72,24 +74,20 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 				if (args[1].equalsIgnoreCase("@e")) {
 					sender.sendMessage(ChatColor.RED + "Only players may be affected by this command, but the provided selector includes entities");
 					return false;
-				} else if (args[1].equalsIgnoreCase("@s")) {
-					((Player) sender).setGameMode(gamemode);
-					sendChangeGamemodeMessage(sender, null, gamemode);
-					return true;
-				} else if (args[1].equalsIgnoreCase("@a") || args[1].equalsIgnoreCase("@r")) {
-					for (Entity e : Bukkit.selectEntities(sender, args[1])) {
-						((Player) e).setGameMode(gamemode);
-						sendChangeGamemodeMessage(sender, (Player) e, gamemode);
-					}
-					return true;
 				}
-				Player target = Bukkit.getPlayer(args[1]);
-				if (target != null) {
-					target.setGameMode(gamemode);
-					sendChangeGamemodeMessage(sender, target, gamemode);
-					return true;
+				List<Entity> listPlayer = Bukkit.selectEntities(sender, args[1]);
+				if (listPlayer.size() == 0) {
+					sender.sendMessage(ChatColor.RED + "No player was found");
+					return false;
 				}
-				sender.sendMessage(ChatColor.RED + "No player was found");
+				for (Entity ep : listPlayer) {
+					Player p = (Player) ep;
+					p.setGameMode(gamemode);
+					sendChangeGamemodeMessage(sender, p, gamemode);
+				}
+			}
+			if (args.length == 2) {
+				sender.sendMessage(ChatColor.RED + "Unknown or incomplete command.");
 				return false;
 			}
 			((Player) sender).setGameMode(gamemode);
