@@ -14,9 +14,7 @@ import java.util.logging.Level;
 public class Teleport implements CommandExecutor, TabCompleter {
 
 	CreativeServerPermissions plugin;
-	Teleport(CreativeServerPermissions instance) {
-		plugin = instance;
-	}
+	Teleport(CreativeServerPermissions instance) {this.plugin = instance;}
 
 	private void teleport(CommandSender sender, Player target, Player toplayer, Location to) {
 		if (to == null && toplayer != null) {

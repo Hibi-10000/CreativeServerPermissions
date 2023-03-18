@@ -16,9 +16,7 @@ import java.util.logging.Level;
 public class Gamemode implements CommandExecutor, TabCompleter {
 
 	CreativeServerPermissions plugin;
-	Gamemode(CreativeServerPermissions instance) {
-		plugin = instance;
-	}
+	Gamemode(CreativeServerPermissions instance) {this.plugin = instance;}
 
 	public static String upperCaseFirst(String val) {
 		char[] arr = val.toCharArray();
