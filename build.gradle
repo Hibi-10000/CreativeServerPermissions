@@ -1,8 +1,7 @@
 plugins {
     id 'java'
-    id 'maven-publish'
     id 'java-library'
-    id 'net.minecrell.plugin-yml.bukkit' version '0.5.1'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.5.2'
 }
 
 group 'com.github.hibi_10000.plugins'
@@ -15,11 +14,12 @@ repositories {
 }
 
 dependencies {
-    api 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
-    api 'com.comphenix.protocol:ProtocolLib:4.7.0'
+    implementation 'org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT'
+    implementation 'com.comphenix.protocol:ProtocolLib:4.8.0'
+    implementation 'org.jetbrains:annotations:24.0.1'
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
@@ -30,7 +30,7 @@ bukkit {
     website = 'https://github.com/Hibi-10000/CreativeServerPermissions'
     author = 'Hibi_10000'
     main = 'com.github.hibi_10000.plugins.creativeserverpermissions.CreativeServerPermissions'
-    apiVersion = '1.17'
+    apiVersion = '1.13'
 
     load = 'STARTUP' // or 'POSTWORLD'
     //authors = ['Auther1', 'Auther2']
@@ -60,7 +60,7 @@ bukkit {
 
     permissions {
         'creativeserverpermissions.teleport' {
-            description = 'Teleport Permission'
+            description = 'Teleport Command Permission'
             setDefault('true')
             //children = ['autobackup.command','autobackup.reload', 'autobackup.admin', 'autobackup.create'] // Defaults permissions to true
             // You can also specify the values of the permissions
@@ -72,7 +72,7 @@ bukkit {
             children = ['creativeserverpermissions.teleport']
         }
         'creativeserverpermissions.gamemode' {
-            description = 'Gamemode Permission'
+            description = 'Gamemode Command Permission'
             setDefault('true')
         }
         'creativeserverpermissions.gamemode.use-f3f4n' {
@@ -80,7 +80,7 @@ bukkit {
             setDefault('true')
         }
         'creativeserverpermissions.gamemode.other' {
-            description = 'Other Player Gamemode Permission'
+            description = 'Gamemode Command to Other Player Permission'
             setDefault('OP')
             children = ['creativeserverpermissions.gamemode']
         }
