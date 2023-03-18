@@ -50,26 +50,24 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 				sender.sendMessage(ChatColor.RED + "Unknown or incomplete command.");
 				return false;
 			}
-			GameMode gamemode;
-			try {
-				gamemode = GameMode.valueOf(args[0].toUpperCase());
-			} catch (IllegalArgumentException e) {
-				Map<String ,GameMode> map = new HashMap<>();
-				map.put("0", GameMode.SURVIVAL);
-				map.put("s", GameMode.SURVIVAL);
-				map.put("1", GameMode.CREATIVE);
-				map.put("c", GameMode.CREATIVE);
-				map.put("2", GameMode.ADVENTURE);
-				map.put("a", GameMode.ADVENTURE);
-				map.put("3", GameMode.SPECTATOR);
-				map.put("sp", GameMode.SPECTATOR);
-				if (map.containsKey(args[0])) {
-					gamemode = map.get(args[0]);
-				} else {
-					sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
-					return false;
-				}
+			Map<String ,GameMode> map = new HashMap<>();
+			map.put("0", GameMode.SURVIVAL);
+			map.put("S", GameMode.SURVIVAL);
+			map.put("SURVIVAL", GameMode.SURVIVAL);
+			map.put("1", GameMode.CREATIVE);
+			map.put("C", GameMode.CREATIVE);
+			map.put("CREATIVE", GameMode.CREATIVE);
+			map.put("2", GameMode.ADVENTURE);
+			map.put("A", GameMode.ADVENTURE);
+			map.put("ADVENTURE", GameMode.ADVENTURE);
+			map.put("3", GameMode.SPECTATOR);
+			map.put("SP", GameMode.SPECTATOR);
+			map.put("SPECTATOR", GameMode.SPECTATOR);
+			if (!map.containsKey(args[0].toUpperCase())) {
+				sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
+				return false;
 			}
+			GameMode gamemode = map.get(args[0].toUpperCase());
 			if (sender.hasPermission("creativeserverpermissions.gamemode.other") && args.length == 2) {
 				if (args[1].equalsIgnoreCase("@e")) {
 					sender.sendMessage(ChatColor.RED + "Only players may be affected by this command, but the provided selector includes entities");
