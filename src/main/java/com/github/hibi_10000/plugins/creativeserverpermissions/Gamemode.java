@@ -6,6 +6,7 @@ import org.bukkit.GameMode;
 import org.bukkit.command.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -13,7 +14,7 @@ import java.util.logging.Level;
 public class Gamemode implements CommandExecutor, TabCompleter {
 
 	CreativeServerPermissions plugin;
-	Gamemode(CreativeServerPermissions instance) {this.plugin = instance;}
+	Gamemode(@NotNull CreativeServerPermissions instance) {this.plugin = instance;}
 
 	public static String upperCaseFirst(String val) {
 		char[] arr = val.toCharArray();
@@ -38,7 +39,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("gamemode")) {
 			if (sender instanceof ConsoleCommandSender || sender instanceof BlockCommandSender || sender.hasPermission("minecraft.command.gamemode")) {
 				StringBuilder sb = new StringBuilder("minecraft:gamemode");
@@ -98,7 +99,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
 		if (command.getName().equalsIgnoreCase("gamemode")) {
 			if (args.length == 1) {
 				List<String> list = new ArrayList<>();

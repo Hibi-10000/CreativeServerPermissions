@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.logging.Level;
 public class Teleport implements CommandExecutor, TabCompleter {
 
 	CreativeServerPermissions plugin;
-	Teleport(CreativeServerPermissions instance) {this.plugin = instance;}
+	Teleport(@NotNull CreativeServerPermissions instance) {this.plugin = instance;}
 
 	private void teleport(CommandSender sender, Player target, Player toplayer, Location to) {
 		if (to == null && toplayer != null) {
@@ -86,7 +87,7 @@ public class Teleport implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("tp")) {
 			if (sender instanceof ConsoleCommandSender || sender instanceof BlockCommandSender || sender.hasPermission("minecraft.command.teleport")) {
 				StringBuilder sb = new StringBuilder("minecraft:tp");
@@ -170,7 +171,7 @@ public class Teleport implements CommandExecutor, TabCompleter {
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
 		if (command.getName().equalsIgnoreCase("tp")) {
 			List<String> plist = new ArrayList<>();
 			plist.add("@a");
