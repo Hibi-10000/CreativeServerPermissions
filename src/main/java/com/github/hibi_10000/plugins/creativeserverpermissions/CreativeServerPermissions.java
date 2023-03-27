@@ -21,7 +21,6 @@ public class CreativeServerPermissions extends JavaPlugin implements Listener {
 		getCommand("Gamemode").setTabCompleter(new Gamemode(this));
 		getCommand("Teleport").setExecutor(new Teleport(this));
 		getCommand("Teleport").setTabCompleter(new Teleport(this));
-		getServer().getPluginManager().registerEvents(this, this);
 		if (getServer().getPluginManager().isPluginEnabled("ProtocolLib")) {
 			provider = new ProtocolLibProvider();
 			provider.register(this);
@@ -30,6 +29,7 @@ public class CreativeServerPermissions extends JavaPlugin implements Listener {
 					provider.update(p);
 				}
 			}, 0L,20L);
+			getServer().getPluginManager().registerEvents(this, this);
 		} else {
 			getLogger().log(Level.SEVERE, "Players cannot use F3 + F4 and F3 + N because ProtocolLib cannot be found!");
 		}
