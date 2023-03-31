@@ -89,7 +89,8 @@ public class Teleport implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("tp")) {
-			if (sender instanceof ConsoleCommandSender || sender instanceof BlockCommandSender || sender.hasPermission("minecraft.command.teleport")) {
+			if (!(sender instanceof Player)
+					|| sender.hasPermission("minecraft.command.teleport")) {
 				StringBuilder sb = new StringBuilder("minecraft:tp");
 				for (String str : args) {
 					sb.append(" ").append(str);
@@ -172,58 +173,99 @@ public class Teleport implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-		if (command.getName().equalsIgnoreCase("tp")) {
-			List<String> plist = new ArrayList<>();
-			plist.add("@a");
-			plist.add("@e");
-			plist.add("@p");
-			plist.add("@r");
-			plist.add("@s");
-			for (Player p : Bukkit.getOnlinePlayers()) {
-				plist.add(p.getName());
-			}
-			if (args.length == 1) {
-				List<String> list = new ArrayList<>();
-				list.add("@a");
-				list.add("@e");
-				list.add("@p");
-				list.add("@r");
-				list.add("@s");
-				list.add("~");
-				list.add("~ ~");
-				list.add("~ ~ ~");
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					list.add(p.getName());
+		if (!command.getName().equalsIgnoreCase("tp")) return null;
+		List<String> list = new ArrayList<>();
+		if (args.length == 1) {
+			if (!args[0].equals("")) {
+				if (args[0].contains("~") || args[0].chars().allMatch(Character::isDigit)) {
+					list.add(args[0] + " ~");
+					list.add(args[0] + " ~ ~");
+					return list;
 				}
-				return list;
-			}
-			if (args.length == 2 && sender.hasPermission("creativeserverpermissions.teleport.other") && plist.contains(args[0])) {
-				List<String> list = new ArrayList<>();
-				list.add("@a");
-				list.add("@e");
-				list.add("@p");
-				list.add("@r");
-				list.add("@s");
-				list.add("~");
-				list.add("~ ~");
-				list.add("~ ~ ~");
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					list.add(p.getName());
+				if (args[0].contains("^")) {
+					list.add(args[0] + " ^");
+					list.add(args[0] + " ^ ^");
+					return list;
 				}
-				return list;
 			}
-			if (args.length == 2 && args[0].contains("~")) {
-				List<String> list = new ArrayList<>();
+			list.add("@a");
+			list.add("@e");
+			list.add("@p");
+			list.add("@r");
+			list.add("@s");
+			list.add("~");
+			list.add("~ ~");
+			list.add("~ ~ ~");
+			for (Player p : plugin.getServer().getOnlinePlayers()) {
+				list.add(p.getName());
+			}
+			return list;
+		}
+		if (args.length == 2) {
+			if (args[0].contains("~") || args[0].chars().allMatch(Character::isDigit)) {
 				list.add("~");
 				list.add("~ ~");
 				return list;
 			}
-			if (args.length == 3 && args[0].contains("~")) {
-				List<String> list = new ArrayList<>();
+			if (args[0].contains("^")) {
+				list.add("^");
+				list.add("^ ^");
+				return list;
+			}
+			if (!args[1].equals("")) {
+				if (args[1].contains("~") || args[1].chars().allMatch(Character::isDigit)) {
+					list.add(args[1] + " ~");
+					list.add(args[1] + " ~ ~");
+					return list;
+				}
+				if (args[1].contains("^")) {
+					list.add(args[1] + " ^");
+					list.add(args[1] + " ^ ^");
+					return list;
+				}
+			}
+			list.add("@a");
+			list.add("@e");
+			list.add("@p");
+			list.add("@r");
+			list.add("@s");
+			list.add("~");
+			list.add("~ ~");
+			list.add("~ ~ ~");
+			for (Player p : plugin.getServer().getOnlinePlayers()) {
+				list.add(p.getName());
+			}
+			return list;
+		}
+		if (args.length == 3) {
+			if (args[0].contains("~") || args[0].chars().allMatch(Character::isDigit)) {
 				list.add("~");
 				return list;
 			}
-			return null;
+			if (args[0].contains("^") && args[1].contains("^")) {
+				list.add("^");
+				return list;
+			}
+			if (args[1].contains("~") || args[1].chars().allMatch(Character::isDigit)) {
+				list.add("~");
+				list.add("~ ~");
+				return list;
+			}
+			if (args[1].contains("^")) {
+				list.add("^");
+				list.add("^ ^");
+				return list;
+			}
+		}
+		if (args.length == 4) {
+			if (args[1].contains("~") || args[1].chars().allMatch(Character::isDigit)) {
+				list.add("~");
+				return list;
+			}
+			if (args[1].contains("^") && args[2].contains("^")) {
+				list.add("^");
+				return list;
+			}
 		}
 		return null;
 	}

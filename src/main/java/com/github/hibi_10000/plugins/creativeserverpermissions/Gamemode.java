@@ -56,7 +56,8 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("gamemode")) {
-			if (sender instanceof ConsoleCommandSender || sender instanceof BlockCommandSender || sender.hasPermission("minecraft.command.gamemode")) {
+			if (!(sender instanceof Player)
+					|| sender.hasPermission("minecraft.command.gamemode")) {
 				StringBuilder sb = new StringBuilder("minecraft:gamemode");
 				for (String str : args) {
 					sb.append(" ").append(str);
@@ -102,26 +103,30 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-		if (command.getName().equalsIgnoreCase("gamemode")) {
-			if (args.length == 1) {
-				List<String> list = new ArrayList<>();
-				for (GameMode gm : GameMode.values()) {
-					list.add(gm.name().toLowerCase());
-				}
-				return list;
-			} else if (args.length == 2 && sender.hasPermission("creativeserverpermissions.gamemode.other")) {
-				List<String> list = new ArrayList<>();
+		if (!command.getName().equalsIgnoreCase("gamemode")) return null;
+		List<String> list = new ArrayList<>();
+		if (args.length == 1) {
+			for (GameMode gm : GameMode.values()) {
+				list.add(gm.name().toLowerCase());
+			}
+			return list;
+		}
+		if (args.length == 2) {
+			if (!(sender instanceof  Player)
+					|| sender.hasPermission("minecraft.command.gamemode")) {
 				list.add("@a");
 				list.add("@e");
 				list.add("@p");
 				list.add("@r");
 				list.add("@s");
-				for (Player p : Bukkit.getOnlinePlayers()) {
+				for (Player p : plugin.getServer().getOnlinePlayers()) {
 					list.add(p.getName());
 				}
-				return list;
+			} else {
+				list.add("@s");
+				list.add(sender.getName());
 			}
-			return null;
+			return list;
 		}
 		return null;
 	}
