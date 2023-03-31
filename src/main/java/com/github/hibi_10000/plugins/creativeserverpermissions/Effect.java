@@ -78,7 +78,7 @@ public class Effect implements CommandExecutor, TabCompleter {
                 sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
                 return false;
             }
-            int args3 = 30 * 20;
+            int args3 = 30;
             int args4 = 0;
             boolean args5 = false;
             PotionEffect effect;
@@ -97,7 +97,7 @@ public class Effect implements CommandExecutor, TabCompleter {
                             + "The duration integer must not be more than 1000000, found " + args[3]);
                     return false;
                 }
-                args3 = Integer.parseInt(args[3]) * 20;
+                args3 = Integer.parseInt(args[3]);
                 if (args3 == 0) {
                     sender.sendMessage(ChatColor.RED + "Integer must not be less than 1, found 0");
                     return false;
@@ -143,7 +143,7 @@ public class Effect implements CommandExecutor, TabCompleter {
                 sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
                 return false;
             }
-            effect = new PotionEffect(effectType, args3, args4, false, !args5, !args5);
+            effect = new PotionEffect(effectType, args3 * 20, args4, false, !args5, !args5);
             senderP.addPotionEffect(effect);
             sender.sendMessage("Applied effect "
                     + Joiner.on(" ").join(CaseFormat.LOWER_UNDERSCORE
