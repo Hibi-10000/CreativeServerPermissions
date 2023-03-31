@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 public class Teleport implements CommandExecutor, TabCompleter {
 
@@ -21,14 +20,14 @@ public class Teleport implements CommandExecutor, TabCompleter {
 		if (to == null && toplayer != null) {
 			target.teleport(toplayer);
 			sender.sendMessage("Teleported " + target.getName() + " to " + toplayer.getName());
-			Bukkit.getLogger().log(Level.INFO, ChatColor.GRAY + "[" + sender.getName() + ": Teleported " + target.getName() + " to " + toplayer.getName() + "]");
+			plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Teleported " + target.getName() + " to " + toplayer.getName() + "]");
 			if (target != sender) {
 				target.sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Teleported " + target.getName() + " to " + toplayer.getName() + "]");
 			}
 		} else if (toplayer == null && to != null) {
 			target.teleport(to);
 			sender.sendMessage("Teleported " + target.getName() + " to " + to.getX() + ", " + to.getY() + ", " + to.getZ());
-			Bukkit.getLogger().log(Level.INFO, ChatColor.GRAY + "[" + sender.getName() + ": Teleported " + target.getName() + " to " + to.getX() + ", " + to.getY() + ", " + to.getZ() + "]");
+			plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Teleported " + target.getName() + " to " + to.getX() + ", " + to.getY() + ", " + to.getZ() + "]");
 			if (target != sender) {
 				target.sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Teleported " + target.getName() + " to " + to.getX() + ", " + to.getY() + ", " + to.getZ() + "]");
 			}
@@ -103,7 +102,7 @@ public class Teleport implements CommandExecutor, TabCompleter {
 				return false;
 			}
 			if (sender.hasPermission("creativeserverpermissions.teleport.other")) {
-				for (Player target : Bukkit.getOnlinePlayers()) {
+				for (Player target : plugin.getServer().getOnlinePlayers()) {
 					if (!target.getName().equalsIgnoreCase(sender.getName()) && target.getName().equalsIgnoreCase(args[0])) {
 						if (args.length == 2) {
 							try {

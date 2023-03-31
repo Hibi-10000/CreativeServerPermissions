@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.logging.Level;
 
 public class Gamemode implements CommandExecutor, TabCompleter {
 
@@ -40,17 +39,17 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 	private void sendChangeGamemodeMessage(CommandSender sender, Player player, GameMode gamemode) {
 		if (player == null) {
 			sender.sendMessage("Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
-			Bukkit.getLogger().log(Level.INFO, ChatColor.GRAY + "[" + sender.getName() + ": Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
+			plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
 			return;
 		}
 		if (sender.getName().equals(player.getName())) {
 			sender.sendMessage("Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
-			Bukkit.getLogger().log(Level.INFO, ChatColor.GRAY + "[" + sender.getName() + ": Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
+			plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
 			return;
 		}
 		sender.sendMessage("Set " + player.getName() + " game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
 		player.sendMessage("Your game mode has been updated to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
-		Bukkit.getLogger().log(Level.INFO, ChatColor.GRAY + "[" + sender.getName() + ": Set " + player.getName() + " game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
+		plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Set " + player.getName() + " game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
 	}
 
 	@Override
