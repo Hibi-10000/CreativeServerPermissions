@@ -31,9 +31,7 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 	}
 
 	public static String upperCaseFirst(String val) {
-		char[] arr = val.toCharArray();
-		arr[0] = Character.toUpperCase(arr[0]);
-		return new String(arr);
+		return Character.toUpperCase(val.charAt(0)) + val.substring(1);
 	}
 
 	private void sendChangeGamemodeMessage(CommandSender sender, Player player, GameMode gamemode) {

@@ -56,6 +56,11 @@ bukkit {
             permissionMessage = 'Unknown command. Type "/help" for help.'
             //usage = ''
         }
+        'effect'{
+            description = 'Effect Command'
+            permission = 'creativeserverpermissions.effect'
+            permissionMessage = 'Unknown command. Type "/help" for help.'
+        }
     }
 
     permissions {
@@ -84,5 +89,27 @@ bukkit {
             setDefault('OP')
             children = ['creativeserverpermissions.gamemode']
         }
+        'creativeserverpermissions.effect' {
+            description = 'Effect Command Permission'
+            setDefault('true')
+        }
+        /*
+        'creativeserverpermissions.effect.use.*' {
+            description = 'All Type Effect Command Permission'
+            setDefault('true')
+        }
+        */
+        'creativeserverpermissions.effect.other' {
+            description = 'Effect Command to Other Player Permission'
+            setDefault('OP')
+            children = ['creativeserverpermissions.effect', 'minecraft.command.effect']
+        }
+        /*
+        'creativeserverpermissions.effect.other.use.*' {
+            description = 'All Type Effect Command to Other Player Permission'
+            setDefault('OP')
+            children = ['creativeserverpermissions.effect']
+        }
+        */
     }
 }

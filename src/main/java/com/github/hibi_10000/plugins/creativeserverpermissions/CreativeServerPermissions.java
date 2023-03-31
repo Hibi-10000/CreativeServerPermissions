@@ -17,10 +17,12 @@ public class CreativeServerPermissions extends JavaPlugin implements Listener {
 
 	@Override
 	public void onEnable() {
-		getCommand("Gamemode").setExecutor(new Gamemode(this));
-		getCommand("Gamemode").setTabCompleter(new Gamemode(this));
-		getCommand("Teleport").setExecutor(new Teleport(this));
-		getCommand("Teleport").setTabCompleter(new Teleport(this));
+		getCommand("gamemode").setExecutor(new Gamemode(this));
+		getCommand("gamemode").setTabCompleter(new Gamemode(this));
+		getCommand("teleport").setExecutor(new Teleport(this));
+		getCommand("teleport").setTabCompleter(new Teleport(this));
+		getCommand("effect").setExecutor(new Effect(this));
+		getCommand("effect").setTabCompleter(new Effect(this));
 		if (getServer().getPluginManager().isPluginEnabled("ProtocolLib")) {
 			provider = new ProtocolLibProvider();
 			provider.register(this);
