@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,22 +34,6 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 		return Character.toUpperCase(val.charAt(0)) + val.substring(1);
 	}
 
-	private void sendChangeGamemodeMessage(CommandSender sender, Player player, GameMode gamemode) {
-		if (player == null) {
-			sender.sendMessage("Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
-			plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
-			return;
-		}
-		if (sender.getName().equals(player.getName())) {
-			sender.sendMessage("Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
-			plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
-			return;
-		}
-		sender.sendMessage("Set " + player.getName() + " game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
-		player.sendMessage("Your game mode has been updated to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
-		plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Set " + player.getName() + " game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
-	}
-
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
 		if (command.getName().equalsIgnoreCase("gamemode")) {
@@ -69,13 +54,30 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 				sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
 				return false;
 			}
+			Player senderP = (Player) sender;
 			GameMode gamemode = map.get(args[0].toUpperCase());
 			if (args.length == 2) {
-				sender.sendMessage(ChatColor.RED + "Unknown or incomplete command.");
-				return false;
+				try {
+					List<Entity> listE = plugin.getServer().selectEntities(sender, args[1]);
+					if (listE.size() == 0) {
+						// 当てはまるエンティティがいなかった
+						sender.sendMessage(ChatColor.RED + "No entity was found");
+						return false;
+					}
+					if (listE.size() > 1 || !listE.get(0).getUniqueId().equals(senderP.getUniqueId())) {
+						// 自分以外を(も)指定した
+						sender.sendMessage(ChatColor.RED + "You are not authorized to specify a player");
+						return false;
+					}
+				} catch (IllegalArgumentException e) {
+					// '/gamemode [gamemode] @[!(a|e|p|r|s)]'
+					sender.sendMessage(ChatColor.RED + "Unknown selector type '" + args[1] + "'");
+					return false;
+				}
 			}
-			((Player) sender).setGameMode(gamemode);
-			sendChangeGamemodeMessage(sender, null, gamemode);
+			senderP.setGameMode(gamemode);
+			sender.sendMessage("Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode");
+			plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "[" + sender.getName() + ": Set own game mode to " + upperCaseFirst(gamemode.name().toLowerCase()) + " Mode]");
 			return true;
 		}
 		return false;
