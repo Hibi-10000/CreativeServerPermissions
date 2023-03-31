@@ -197,7 +197,8 @@ public class Effect implements CommandExecutor, TabCompleter {
                     // senderが[effectType]の効果を持っていた
                     senderP.removePotionEffect(effectType);
                     sender.sendMessage("Removed effect "
-                            + effectType.getKey().getKey().replace("_", " ")
+                            + Joiner.on(" ").join(CaseFormat.LOWER_UNDERSCORE
+                            .to(CaseFormat.UPPER_CAMEL, effectType.getKey().getKey()).split("(?=[A-Z])"))
                             + " from " + sender.getName());
                     plugin.getServer().getConsoleSender().sendMessage(ChatColor.GRAY + "["
                             + sender.getName() + ": Removed effect "
