@@ -101,31 +101,6 @@ public class Teleport implements CommandExecutor, TabCompleter {
 				sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
 				return false;
 			}
-			if (sender.hasPermission("creativeserverpermissions.teleport.other")) {
-				for (Player target : plugin.getServer().getOnlinePlayers()) {
-					if (!target.getName().equalsIgnoreCase(sender.getName()) && target.getName().equalsIgnoreCase(args[0])) {
-						if (args.length == 2) {
-							try {
-								teleport(sender, target, Bukkit.getPlayer(args[1]), null);
-								return true;
-							} catch (NullPointerException e) {
-								sender.sendMessage(ChatColor.RED + "No player was found");
-								return false;
-							}
-						}
-						if (args.length == 4) {
-							teleport(sender, target, null, getLocation(sender, args[1], args[2], args[3], target.getLocation().getPitch(), target.getLocation().getYaw()));
-							return true;
-						}
-						if (args.length == 6) {
-							teleport(sender, target, null, getLocation(sender, args[1], args[2], args[3], Float.parseFloat(args[4]), Float.parseFloat(args[5])));
-							return true;
-						}
-						sender.sendMessage(ChatColor.RED + "Incorrect argument for command");
-						return false;
-					}
-				}
-			}
 			if (args[0].equalsIgnoreCase("@s") || args[0].equalsIgnoreCase("@p")) {
 				if (args.length == 2) {
 					try {

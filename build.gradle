@@ -44,7 +44,7 @@ bukkit {
     commands {
         'gamemode' {
             description = 'Gamemode Command'
-            aliases = ['gm']
+            //aliases = ['gm']
             permission = 'creativeserverpermissions.gamemode'
             permissionMessage = 'Unknown command. Type "/help" for help.'
             //usage = ''
@@ -67,14 +67,9 @@ bukkit {
         'creativeserverpermissions.teleport' {
             description = 'Teleport Command Permission'
             setDefault('true')
-            //children = ['autobackup.command','autobackup.reload', 'autobackup.admin', 'autobackup.create'] // Defaults permissions to true
+            //children = ['.command','.reload'] // Defaults permissions to true
             // You can also specify the values of the permissions
             //childrenMap = ['test': false]
-        }
-        'creativeserverpermissions.teleport.other' {
-            description = 'Other Player Teleport Permission'
-            setDefault('OP')
-            children = ['creativeserverpermissions.teleport']
         }
         'creativeserverpermissions.gamemode' {
             description = 'Gamemode Command Permission'
@@ -84,11 +79,6 @@ bukkit {
             description = 'Client F3+F4 or F3+N Gamemode Changer Use Permission'
             setDefault('true')
         }
-        'creativeserverpermissions.gamemode.other' {
-            description = 'Gamemode Command to Other Player Permission'
-            setDefault('OP')
-            children = ['creativeserverpermissions.gamemode']
-        }
         'creativeserverpermissions.effect' {
             description = 'Effect Command Permission'
             setDefault('true')
@@ -97,18 +87,6 @@ bukkit {
         'creativeserverpermissions.effect.use.*' {
             description = 'All Type Effect Command Permission'
             setDefault('true')
-        }
-        */
-        'creativeserverpermissions.effect.other' {
-            description = 'Effect Command to Other Player Permission'
-            setDefault('OP')
-            children = ['creativeserverpermissions.effect', 'minecraft.command.effect']
-        }
-        /*
-        'creativeserverpermissions.effect.other.use.*' {
-            description = 'All Type Effect Command to Other Player Permission'
-            setDefault('OP')
-            children = ['creativeserverpermissions.effect']
         }
         */
     }

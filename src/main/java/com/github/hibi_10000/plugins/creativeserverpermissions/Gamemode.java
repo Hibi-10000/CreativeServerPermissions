@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.*;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,22 +70,6 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 				return false;
 			}
 			GameMode gamemode = map.get(args[0].toUpperCase());
-			if (sender.hasPermission("creativeserverpermissions.gamemode.other") && args.length == 2) {
-				if (args[1].equalsIgnoreCase("@e")) {
-					sender.sendMessage(ChatColor.RED + "Only players may be affected by this command, but the provided selector includes entities");
-					return false;
-				}
-				List<Entity> listPlayer = Bukkit.selectEntities(sender, args[1]);
-				if (listPlayer.size() == 0) {
-					sender.sendMessage(ChatColor.RED + "No player was found");
-					return false;
-				}
-				for (Entity ep : listPlayer) {
-					Player p = (Player) ep;
-					p.setGameMode(gamemode);
-					sendChangeGamemodeMessage(sender, p, gamemode);
-				}
-			}
 			if (args.length == 2) {
 				sender.sendMessage(ChatColor.RED + "Unknown or incomplete command.");
 				return false;
